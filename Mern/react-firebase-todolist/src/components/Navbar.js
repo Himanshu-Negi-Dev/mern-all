@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { GiHamburgerMenu } from "react-icons/all";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout_user } from "../actions/auth";
 const Navbar = () => {
   const [toggle, setToggle] = useState(false);
   console.log(toggle);
+  const dispatch = useDispatch();
   return (
     <>
       <nav className="min-w-full bg-white">
@@ -48,7 +51,10 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
-              <Link className="block px-4 py-1 transition-all hover:pl-6 hover:text-white hover:bg-purple-700  md:hover:bg-transparent md:hover:text-purple-700 md:hover:pl-6 md:text-xl md:px-6">
+              <Link
+                onClick={() => dispatch(logout_user())}
+                className="block px-4 py-1 transition-all hover:pl-6 hover:text-white hover:bg-purple-700  md:hover:bg-transparent md:hover:text-purple-700 md:hover:pl-6 md:text-xl md:px-6"
+              >
                 Logout
               </Link>
             </li>

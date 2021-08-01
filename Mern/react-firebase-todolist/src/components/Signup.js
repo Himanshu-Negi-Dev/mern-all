@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signup_user } from "../actions/auth";
 import { toast } from "react-toastify";
+import { Redirect } from "react-router-dom";
 const Signup = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -9,13 +10,19 @@ const Signup = () => {
   });
 
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.authReducer.user);
+
+  if (user !== null) {
+    return <Redirect to="/" />;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(formData.email, formData.password);
-      // dispatch(signup_user(formData));
-      toast.dark("User created!");
+      // console.log(formData.email, formData.password);
+      await dispatch(signup_user(formData));
+
+      toast.dark("your account is created you can login now");
     } catch (error) {
       console.log(error);
     }

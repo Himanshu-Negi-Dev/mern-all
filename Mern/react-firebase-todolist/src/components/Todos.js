@@ -1,6 +1,14 @@
 import React from "react";
 import { FaTrash } from "react-icons/all";
+import { Redirect } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 const Todos = () => {
+  const user = useSelector((state) => state.authReducer.user);
+
+  if (user === null) {
+    return <Redirect to="/login" />;
+  }
   const todos = ["Eat", "Sleep", "Code"];
   return (
     <>
