@@ -1,5 +1,6 @@
 import { SIGNUP_SUCCESS, SIGNUP_FAIL, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT_USER, LOAD_USER } from "./type";
 import { auth } from "../firebase";
+import { user_signout } from "./todos";
 
 export const load_user = () => {
   return async (dispatch) => {
@@ -61,6 +62,8 @@ export const logout_user = () => {
       dispatch({
         type: LOGOUT_USER,
       });
+
+      dispatch(user_signout());
     } catch (error) {
       console.log(error);
     }

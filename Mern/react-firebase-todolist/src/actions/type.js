@@ -4,3 +4,7 @@ export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAIL = "LOGIN_FAIL";
 export const LOGOUT_USER = "LOGOUT_USER";
 export const LOAD_USER = "LOAD_USER";
+export const ADD_TODO = "ADD_TODO";
+export const GET_TODOS = "GET_TODOS";
+export const DELETE_TODO = "DELETE_TODO";
+export const USER_SIGNOUT = "USER_SIGNOUT";

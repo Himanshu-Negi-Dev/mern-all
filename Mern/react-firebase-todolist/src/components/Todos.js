@@ -1,22 +1,46 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FaTrash } from "react-icons/all";
-import { Redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { add_todo, get_todos, delete_todo } from "../actions/todos";
+const Todos = ({ history }) => {
+  const [todo, setTodo] = useState("");
 
-const Todos = () => {
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.authReducer.user);
+  const mytodos = useSelector((state) => state.todoReducer.todos);
 
-  if (user === null) {
-    return <Redirect to="/login" />;
-  }
-  const todos = ["Eat", "Sleep", "Code"];
+  useEffect(() => {
+    if (user) {
+      dispatch(get_todos(user.uid));
+    } else {
+      history.push("/login");
+    }
+
+  }, [user, history, dispatch]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await dispatch(add_todo(mytodos, todo, user.uid));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <article>
         <h1 className="text-3xl text-center mt-14">All Todos</h1>
         <div id="todo-form-container" className="w-4/5 mt-4 mx-auto md:w-2/5">
-          <form action="" className="flex justify-center items-center gap-2 py-6 bg-purple-500">
-            <input type="text" placeholder="Enter Todo" className="w-9/12 p-3 rounded" />
+          <form onSubmit={handleSubmit} className="flex justify-center items-center gap-2 py-6 bg-purple-500">
+            <input
+              type="text"
+              placeholder="Enter Todo"
+              className="w-9/12 p-3 rounded"
+              name="todo"
+              value={todo}
+              onChange={(e) => setTodo(e.target.value)}
+            />
             <button type="submit" className="bg-black text-white py-3 px-4 rounded">
               Add
             </button>
@@ -24,7 +48,7 @@ const Todos = () => {
         </div>
 
         <div id="todos-container">
-          {todos.map((todo) => {
+          {mytodos.map((todo) => {
             return (
               <>
                 <div
@@ -32,7 +56,7 @@ const Todos = () => {
                   className="w-4/5 mt-4 mx-auto flex justify-between items-center px-4 py-1 border-b border-gray-600 md:w-2/5"
                 >
                   <p>{todo}</p>
-                  <FaTrash />
+                  <FaTrash onClick={() => dispatch(delete_todo(user.uid, todo))} />
                 </div>
               </>
             );

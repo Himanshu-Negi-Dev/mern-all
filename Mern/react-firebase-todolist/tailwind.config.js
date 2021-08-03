@@ -12,6 +12,7 @@ module.exports = {
   variants: {
     extend: {
       padding: ["hover"],
+      height: ["responsive", "hover", "focus"],
     },
   },
   plugins: [],
